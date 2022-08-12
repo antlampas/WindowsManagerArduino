@@ -1,0 +1,9 @@
+window	KEYWORD1
+getSize	KEYWORD2
+getPosition	KEYWORD2
+drawBorders	KEYWORD2
+clearWindow	KEYWORD2
+text	KEYWORD2
+windowManager	KEYWORD1
+registerWindow	KEYWORD2
+deregisterWindow	KEYWORD2
