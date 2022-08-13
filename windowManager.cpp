@@ -23,9 +23,16 @@ bool windowManager::checkWindow(int* size,int* position)
 	/*
 	 * Checks if the window passed doesn't overlap with any other previously created window
 	 */
-	for(int i=0;i<this->windowsNumber;i++)
-		if((position[0]>=(this->windows[i]->getPosition())[0] && position[0]<=((this->windows[i]->getPosition())[0]+(this->windows[i]->getSize())[0])) || ((this->windows[i]->getPosition())[0]>=position[0] && (this->windows[i]->getPosition())[0]+(this->windows[i]->getSize())[0]<=(position[0]+size[0])))
+	for(int i=0;i<this->countRegisteredWindows;i++)
+	{
+		int previousWindowPosition[2] {this->windows[i]->getPosition()[0],this->windows[i]->getPosition()[1]};
+		int previousWindowSize[2]     {this->windows[i]->getSize()[0],this->windows[i]->getSize()[1]};
+
+		if(!((position[0]>(previousWindowPosition[0]+previousWindowSize[0])) || ((position[0]+size[0])<previousWindowPosition[0]) || (position[1]>(previousWindowPosition[1]+previousWindowSize[1])) || ((position[1]+size[1])<previousWindowPosition[1])))
+		{
 			return true;
+		}
+	}
 	return false;
 }
 void windowManager::registerWindow(UTFT& tft,int* size,int* position)
@@ -35,16 +42,19 @@ void windowManager::registerWindow(UTFT& tft,int* size,int* position)
 	 * - it is the first window to be created (this->countRegisteredWindows == 0; this->checkWindow() doesn't matter)
 	 * - the window doesn't overlap any other previous created windows (this->countRegisteredWindows > 0 AND this->checkWindow() is True)
 	 * The Truth Table is (A = (this->countRegisteredWindows > 0), B = this->checkWindow(size,position))
-	 *               A    A    |   OP
+	 *               A    B    |   OP
 	 *              --------------------
-	 *               V    V    |   V
-	 *               V    F    |   F
+	 *               V    V    |   F
+	 *               V    F    |   V
 	 *               F    V    |   V
 	 *               F    F    |   V
 	 *
-	 *  The operation associated with that Truth Table is: !A||B
+	 *  The operation associated with that Truth Table is: !(A&&B)
 	 */
-	if(!(this->countRegisteredWindows > 0) || this->checkWindow(size,position))
+	bool overlap {this->checkWindow(size,position)};
+	bool count   {(this->countRegisteredWindows > 0) ? true : false};
+
+	if(!(count && overlap))
 	{
 		this->windows[this->countRegisteredWindows] = new window(tft,size,position);
 		this->countRegisteredWindows++;
