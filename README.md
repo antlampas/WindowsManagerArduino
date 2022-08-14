@@ -1,10 +1,6 @@
-<span style="text-align:center">
 #Arduino Windows and Windows Manager
-</span>
 
-<span style="text-align:center">
 ##Abstract
-</span>
 
 A simple library to draw windows on TFT LCD with Arduino.<br>
 This library relies on UTFT library by Henning Karlsen (http://www.rinkydinkelectronics.com/library.php?id=51) and modified by Damian Golda (https://github.com/dgolda/UTFT) for the low-level communications between Arduino and the TFT LCD.<br>
@@ -29,6 +25,4 @@ This is for writing text in the window
 
 It supersedes the creation of the Windows and checks for overlaps: if some windows overlaps the previous ones, it just doesn't create the overlapping one.
 
-<span style="text-align:center">
 [![Creative Commons License](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png "Creative Commons License")](http://creativecommons.org/licenses/by-nc-sa/4.0/)
-</span>
