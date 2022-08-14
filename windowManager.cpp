@@ -3,6 +3,7 @@
  *
  *  Created on: 9 ago 2022
  *  Author: Francesco Antonetti Lamorgese Passeri
+ *  Version: 1.0
  *  License: CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
  *  This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
  */
@@ -27,7 +28,6 @@ bool windowManager::checkWindow(int* size,int* position)
 	{
 		int previousWindowPosition[2] {this->windows[i]->getPosition()[0],this->windows[i]->getPosition()[1]};
 		int previousWindowSize[2]     {this->windows[i]->getSize()[0],this->windows[i]->getSize()[1]};
-
 		if(!((position[0]>(previousWindowPosition[0]+previousWindowSize[0])) || ((position[0]+size[0])<previousWindowPosition[0]) || (position[1]>(previousWindowPosition[1]+previousWindowSize[1])) || ((position[1]+size[1])<previousWindowPosition[1])))
 		{
 			return true;
@@ -51,12 +51,12 @@ void windowManager::registerWindow(UTFT& tft,int* size,int* position)
 	 *
 	 *  The operation associated with that Truth Table is: !(A&&B)
 	 */
+	bool count   {this->countRegisteredWindows};
 	bool overlap {this->checkWindow(size,position)};
-	bool count   {(this->countRegisteredWindows > 0) ? true : false};
-
+	int registeredWindows = this->countRegisteredWindows;
 	if(!(count && overlap))
 	{
-		this->windows[this->countRegisteredWindows] = new window(tft,size,position);
+		this->windows[registeredWindows] = new window(tft,size,position);
 		this->countRegisteredWindows++;
 	}
 }
