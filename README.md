@@ -25,4 +25,10 @@ This is for writing text in the window
 
 It supersedes the creation of the Windows and checks for overlaps: if some windows overlaps the previous ones, it just doesn't create the overlapping one.
 
+**Register Window**
+
+
+
+**Deregister Window**
+
 [![Creative Commons License](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png "Creative Commons License")](http://creativecommons.org/licenses/by-nc-sa/4.0/)

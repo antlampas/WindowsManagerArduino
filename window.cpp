@@ -53,7 +53,7 @@ void window::text(String text)
 
 	textLength = this->tft.getFontXsize()*text.length();
 
-	if(textLength < this->size[0])
+	if((textLength < this->size[0]) && (text.indexOf("\n") < 0))
 	{
 		textPositionX = (this->position[0]+(this->size[0]-textLength)/2);
 		textPositionY = (this->position[1]+(this->size[1]-this->tft.getFontYsize())/2);
@@ -63,13 +63,44 @@ void window::text(String text)
 	{
 		const int numLines = (this->size[1]-2)/this->tft.getFontYsize();
 		String lines[numLines];
-		for(int i=0,j=maxLineChars,l=0;(j<=textLength) && (l<numLines);++l)
+		for(int i=0,l=0,j=((textLength > maxLineChars) ? maxLineChars : textLength);(j<=textLength) && (l<numLines);++l)
 		{
+#ifdef DEBUG
+			Serial.print("i: ");
+			Serial.println(i);
+			Serial.print("j: ");
+			Serial.println(j);
+#endif
+			int newLine = text.indexOf("\n");
 			String line = text.substring(i,j);
+			if((newLine >= 0) && (newLine <= j))
+			{
+				text.remove(text.indexOf("\n"),1);
+				line = text.substring(i,newLine);
+				line.remove(line.indexOf("\n"),1);
+				i = newLine;
+				Serial.print("text: ");
+				Serial.println(text);
+				Serial.print("line: ");
+				Serial.println(line);
+				lines[l] = line;
+				if((i == j) && (j < textLength))
+				{
+					i = j;
+					((j+maxLineChars) < textLength) ?  j += maxLineChars : j = textLength;
+				}
+				continue;
+			}
+#ifdef DEBUG
+			Serial.print("text: ");
+			Serial.println(text);
+			Serial.print("line: ");
+			Serial.println(line);
 			lines[l] = line;
+#endif
 			i = j;
 			int tmp = j+maxLineChars;
-			tmp<textLength ? j=tmp : j=textLength;
+			(tmp < textLength) ? j+=maxLineChars : j=textLength;
 		}
 		for(int i=0;i<numLines;i++)
 		{

@@ -17,10 +17,6 @@
 
 class windowManager
 {
-private:
-	const int windowsNumber;
-	int countRegisteredWindows;
-	window **windows;
 public:
 	windowManager(const int);
 	void    registerWindow(UTFT&,int*,int*);
@@ -28,8 +24,11 @@ public:
 	int     getWindowsCount();
 	window* getWindow(int);
 private:
+	const int windowsNumber;
+	int countRegisteredWindows;
+	window **windows;
+private:
 	bool checkWindow(int*,int*);
-	void checkLoop();
 };
 
 #endif /* WINDOWMANAGER_HPP_ */
