@@ -79,10 +79,12 @@ void window::text(String text)
 				line = text.substring(i,newLine);
 				line.remove(line.indexOf("\n"),1);
 				i = newLine;
+#ifdef DEBUG
 				Serial.print("text: ");
 				Serial.println(text);
 				Serial.print("line: ");
 				Serial.println(line);
+#endif
 				lines[l] = line;
 				if((i == j) && (j < textLength))
 				{

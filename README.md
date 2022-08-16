@@ -27,8 +27,22 @@ It supersedes the creation of the Windows and checks for overlaps: if some windo
 
 **Register Window**
 
-
+Checks if new windows overlap the existing one and adds just the non-overlapping windows
+>**registerWindow**(UTFT& tft,int* size,int* position)
 
 **Deregister Window**
+
+Deletes the requested window
+>**	void    deregisterWindow(int id);
+
+**Get Windows Count**
+
+Returns the number of registered windows
+>**getWindowsCount**()
+
+**Get Window**
+
+Return a reference of the requested window
+>**getWindow**(int id)
 
 [![Creative Commons License](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png "Creative Commons License")](http://creativecommons.org/licenses/by-nc-sa/4.0/)
