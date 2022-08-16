@@ -19,13 +19,6 @@
 
 class window
 {
-private:
-	int size[2];
-	int position[2];
-	int fontSize[2];
-private:
-	UTFT& tft;
-	void drawBorders();
 public:
 	window(UTFT&,int*,int*);
 	window(UTFT&,int,int,int,int);
@@ -33,6 +26,13 @@ public:
 	void clearWindow();
 	int* getSize();
 	int* getPosition();
+private:
+	int size[2];
+	int position[2];
+	int fontSize[2];
+private:
+	UTFT& tft;
+	void drawBorders();
 };
 
 #endif /* WINDOW_HPP_ */
