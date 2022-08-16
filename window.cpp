@@ -96,8 +96,8 @@ void window::text(String text)
 			Serial.println(text);
 			Serial.print("line: ");
 			Serial.println(line);
-			lines[l] = line;
 #endif
+			lines[l] = line;
 			i = j;
 			int tmp = j+maxLineChars;
 			(tmp < textLength) ? j+=maxLineChars : j=textLength;
