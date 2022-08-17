@@ -52,7 +52,6 @@ void window::text(String text)
 	int maxLineChars = this->size[0]/fontSizeX;
 
 	textLength = this->tft.getFontXsize()*text.length();
-
 	if((textLength < this->size[0]) && (text.indexOf("\n") < 0))
 	{
 		textPositionX = (this->position[0]+(this->size[0]-textLength)/2);
@@ -63,46 +62,31 @@ void window::text(String text)
 	{
 		const int numLines = (this->size[1]-2)/this->tft.getFontYsize();
 		String lines[numLines];
-		for(int i=0,l=0,j=((textLength > maxLineChars) ? maxLineChars : textLength);(j<=textLength) && (l<numLines);++l)
+
+		for(int textIndex=0,lineNumber=0;lineNumber < numLines;++lineNumber)
 		{
-#ifdef DEBUG
-			Serial.print("i: ");
-			Serial.println(i);
-			Serial.print("j: ");
-			Serial.println(j);
-#endif
-			int newLine = text.indexOf("\n");
-			String line = text.substring(i,j);
-			if((newLine >= 0) && (newLine <= j))
+			String line = text.substring(textIndex,(textIndex+maxLineChars < text.length()) ? textIndex+maxLineChars : textIndex+text.length());
+			int newLine = line.indexOf("\n");
+			if((newLine > -1) && (newLine <= text.length()))
 			{
+				line = line.substring(0,newLine);
 				text.remove(text.indexOf("\n"),1);
-				line = text.substring(i,newLine);
 				line.remove(line.indexOf("\n"),1);
-				i = newLine;
-#ifdef DEBUG
-				Serial.print("text: ");
-				Serial.println(text);
-				Serial.print("line: ");
-				Serial.println(line);
-#endif
-				lines[l] = line;
-				if((i == j) && (j < textLength))
-				{
-					i = j;
-					((j+maxLineChars) < textLength) ?  j += maxLineChars : j = textLength;
-				}
+				if(line.length())
+					lines[lineNumber] = line;
+				else
+					--lineNumber;
+				if(textIndex < text.length())
+					textIndex += newLine;
+				else
+					break;
 				continue;
 			}
-#ifdef DEBUG
-			Serial.print("text: ");
-			Serial.println(text);
-			Serial.print("line: ");
-			Serial.println(line);
-#endif
-			lines[l] = line;
-			i = j;
-			int tmp = j+maxLineChars;
-			(tmp < textLength) ? j+=maxLineChars : j=textLength;
+			lines[lineNumber] = line;
+			if(textIndex < text.length())
+				(textIndex+maxLineChars < text.length()) ? textIndex += maxLineChars : textIndex = text.length();
+			else
+				break;
 		}
 		for(int i=0;i<numLines;i++)
 		{
