@@ -14,8 +14,6 @@
 
 #include "Arduino.h"
 
-//#define DEBUG
-
 window::window(UTFT& tft,int* size,int* position) : tft{tft},position{position[0],position[1]},size{size[0],size[1]},fontSize{tft.getFontXsize(),tft.getFontYsize()}
 {
 	this->drawBorders();
@@ -54,10 +52,6 @@ void window::text(String text)
 	int maxLineChars = this->size[0]/fontSizeX;
 
 	textLength = this->tft.getFontXsize()*text.length();
-#ifdef DEBUG
-	Serial.print("Text length: ");
-	Serial.println(text.length());
-#endif
 	if((textLength < this->size[0]) && (text.indexOf("\n") < 0))
 	{
 		textPositionX = (this->position[0]+(this->size[0]-textLength)/2);
@@ -73,24 +67,11 @@ void window::text(String text)
 		{
 			String line = text.substring(textIndex,(textIndex+maxLineChars < text.length()) ? textIndex+maxLineChars : textIndex+text.length());
 			int newLine = line.indexOf("\n");
-#ifdef DEBUG
-			Serial.print("textIndex: ");
-			Serial.println(textIndex);
-			Serial.print("line: ");
-			Serial.println(line);
-#endif
 			if((newLine > -1) && (newLine <= text.length()))
 			{
 				line = line.substring(0,newLine);
 				text.remove(text.indexOf("\n"),1);
 				line.remove(line.indexOf("\n"),1);
-#ifdef DEBUG
-				Serial.print("text: ");
-				Serial.println(text);
-				Serial.print("line: ");
-				Serial.println(line);
-				Serial.println();
-#endif
 				if(line.length())
 					lines[lineNumber] = line;
 				else
@@ -101,13 +82,6 @@ void window::text(String text)
 					break;
 				continue;
 			}
-#ifdef DEBUG
-			Serial.print("text: ");
-			Serial.println(text);
-			Serial.print("line: ");
-			Serial.println(line);
-			Serial.println();
-#endif
 			lines[lineNumber] = line;
 			if(textIndex < text.length())
 				(textIndex+maxLineChars < text.length()) ? textIndex += maxLineChars : textIndex = text.length();
