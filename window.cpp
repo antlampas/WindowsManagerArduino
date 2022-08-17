@@ -14,7 +14,7 @@
 
 #include "Arduino.h"
 
-#define DEBUG
+//#define DEBUG
 
 window::window(UTFT& tft,int* size,int* position) : tft{tft},position{position[0],position[1]},size{size[0],size[1]},fontSize{tft.getFontXsize(),tft.getFontYsize()}
 {
@@ -69,24 +69,22 @@ void window::text(String text)
 		const int numLines = (this->size[1]-2)/this->tft.getFontYsize();
 		String lines[numLines];
 
-		for(int i=0,l=0;l < numLines;++l)
+		for(int textIndex=0,lineNumber=0;lineNumber < numLines;++lineNumber)
 		{
-			String line = text.substring(i,(i+maxLineChars < text.length()) ? i+maxLineChars : i+text.length());
+			String line = text.substring(textIndex,(textIndex+maxLineChars < text.length()) ? textIndex+maxLineChars : textIndex+text.length());
 			int newLine = line.indexOf("\n");
 #ifdef DEBUG
-			Serial.print("i: ");
-			Serial.println(i);
+			Serial.print("textIndex: ");
+			Serial.println(textIndex);
 			Serial.print("line: ");
 			Serial.println(line);
 #endif
-			if((newLine >= 0) && (newLine <= text.length()))
+			if((newLine > -1) && (newLine <= text.length()))
 			{
+				line = line.substring(0,newLine);
 				text.remove(text.indexOf("\n"),1);
-				line = text.substring(i,newLine);
 				line.remove(line.indexOf("\n"),1);
 #ifdef DEBUG
-				Serial.print("Text length: ");
-				Serial.println(text.length());
 				Serial.print("text: ");
 				Serial.println(text);
 				Serial.print("line: ");
@@ -94,11 +92,11 @@ void window::text(String text)
 				Serial.println();
 #endif
 				if(line.length())
-					lines[l] = line;
+					lines[lineNumber] = line;
 				else
-					--l;
-				if(i < text.length())
-					i += newLine;
+					--lineNumber;
+				if(textIndex < text.length())
+					textIndex += newLine;
 				else
 					break;
 				continue;
@@ -110,9 +108,9 @@ void window::text(String text)
 			Serial.println(line);
 			Serial.println();
 #endif
-			lines[l] = line;
-			if(i < text.length())
-				(i+maxLineChars > text.length()) ? i += maxLineChars : i += text.length();
+			lines[lineNumber] = line;
+			if(textIndex < text.length())
+				(textIndex+maxLineChars < text.length()) ? textIndex += maxLineChars : textIndex = text.length();
 			else
 				break;
 		}
