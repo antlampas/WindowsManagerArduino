@@ -48,21 +48,23 @@ void window::text(String text)
 	int textLength;
 	int textPositionX;
 	int textPositionY;
-	int fontSizeX = this->tft.getFontXsize();
-	int maxLineChars = this->size[0]/fontSizeX;
 
-	textLength = this->tft.getFontXsize()*text.length();
-	if((textLength < this->size[0]) && (text.indexOf("\n") < 0))
+	int fontSizeX = this->tft.getFontXsize();
+
+	int maxLineChars = this->size[0]/fontSizeX;
+	const int numLines = (this->size[1]-2)/this->tft.getFontYsize();
+
+	int filledLines = 0;
+
+	if((text.length() < maxLineChars) && (text.indexOf("\n") < 0))
 	{
-		textPositionX = (this->position[0]+(this->size[0]-textLength)/2);
+		textPositionX = (this->position[0]+(this->size[0]-text.length()*this->tft.getFontXsize())/2);
 		textPositionY = (this->position[1]+(this->size[1]-this->tft.getFontYsize())/2);
 		this->tft.print(text,textPositionX,textPositionY);
 	}
 	else
 	{
-		const int numLines = (this->size[1]-2)/this->tft.getFontYsize();
 		String lines[numLines];
-
 		for(int textIndex=0,lineNumber=0;lineNumber < numLines;++lineNumber)
 		{
 			String line = text.substring(textIndex,(textIndex+maxLineChars < text.length()) ? textIndex+maxLineChars : textIndex+text.length());
@@ -79,16 +81,22 @@ void window::text(String text)
 				if(textIndex < text.length())
 					textIndex += newLine;
 				else
+				{
+					filledLines = lineNumber;
 					break;
+				}
 				continue;
 			}
 			lines[lineNumber] = line;
 			if(textIndex < text.length())
 				(textIndex+maxLineChars < text.length()) ? textIndex += maxLineChars : textIndex = text.length();
 			else
+			{
+				filledLines = lineNumber;
 				break;
+			}
 		}
-		for(int i=0;i<numLines;i++)
+		for(int i=0;i<filledLines;i++)
 		{
 			if(lines[i]!="")
 			{
