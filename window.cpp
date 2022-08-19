@@ -45,9 +45,10 @@ void window::clearWindow()
 }
 void window::text(String text)
 {
-	int textLength;
 	int textPositionX;
 	int textPositionY;
+
+	int textLength = text.length();
 
 	int fontSizeX = this->tft.getFontXsize();
 
@@ -56,9 +57,9 @@ void window::text(String text)
 
 	int filledLines = 0;
 
-	if((text.length() < maxLineChars) && (text.indexOf("\n") < 0))
+	if((textLength < maxLineChars) && (text.indexOf("\n") < 0))
 	{
-		textPositionX = (this->position[0]+(this->size[0]-text.length()*this->tft.getFontXsize())/2);
+		textPositionX = (this->position[0]+(this->size[0]-textLength*this->tft.getFontXsize())/2);
 		textPositionY = (this->position[1]+(this->size[1]-this->tft.getFontYsize())/2);
 		this->tft.print(text,textPositionX,textPositionY);
 	}
@@ -67,9 +68,9 @@ void window::text(String text)
 		String lines[numLines];
 		for(int textIndex=0,lineNumber=0;lineNumber < numLines;++lineNumber)
 		{
-			String line = text.substring(textIndex,(textIndex+maxLineChars < text.length()) ? textIndex+maxLineChars : textIndex+text.length());
+			String line = text.substring(textIndex,(textIndex+maxLineChars < textLength) ? textIndex+maxLineChars : textIndex+textLength);
 			int newLine = line.indexOf("\n");
-			if((newLine > -1) && (newLine <= text.length()))
+			if((newLine > -1) && (newLine <= textLength))
 			{
 				line = line.substring(0,newLine);
 				text.remove(text.indexOf("\n"),1);
@@ -78,7 +79,7 @@ void window::text(String text)
 					lines[lineNumber] = line;
 				else
 					--lineNumber;
-				if(textIndex < text.length())
+				if(textIndex < textLength)
 					textIndex += newLine;
 				else
 				{
@@ -88,8 +89,8 @@ void window::text(String text)
 				continue;
 			}
 			lines[lineNumber] = line;
-			if(textIndex < text.length())
-				(textIndex+maxLineChars < text.length()) ? textIndex += maxLineChars : textIndex = text.length();
+			if(textIndex < textLength)
+				(textIndex+maxLineChars < textLength) ? textIndex += maxLineChars : textIndex = textLength;
 			else
 			{
 				filledLines = lineNumber;
