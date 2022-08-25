@@ -14,11 +14,11 @@
 
 #include "Arduino.h"
 
-window::window(UTFT& tft,int* size,int* position) : tft{tft},position{position[0],position[1]},size{size[0],size[1]},fontSize{tft.getFontXsize(),tft.getFontYsize()}
+window::window(UTFT& tft,int* size,int* position,int zIndex) : tft{tft},position{position[0],position[1]},size{size[0],size[1]},fontSize{tft.getFontXsize(),tft.getFontYsize()},zIndex{zIndex}
 {
 	this->drawBorders();
 }
-window::window(UTFT& tft,int sizeX,int sizeY,int positionX,int positionY) : tft{tft},position{positionX,positionY},size{sizeX,sizeY},fontSize{tft.getFontXsize(),tft.getFontYsize()}
+window::window(UTFT& tft,int sizeX,int sizeY,int positionX,int positionY,int zIndex) : tft{tft},position{positionX,positionY},size{sizeX,sizeY},fontSize{tft.getFontXsize(),tft.getFontYsize()},zIndex{zIndex}
 {
 	this->drawBorders();
 }
