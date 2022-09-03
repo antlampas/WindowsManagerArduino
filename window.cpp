@@ -43,6 +43,10 @@ void window::clearWindow()
 	this->tft.setColor(previousColor);
 	this->drawBorders();
 }
+int window::getZIndex()
+{
+	return this->zIndex();
+}
 void window::text(String text)
 {
 	int textPositionX;

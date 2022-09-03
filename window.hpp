@@ -26,6 +26,8 @@ public:
 	void clearWindow();
 	int* getSize();
 	int* getPosition();
+	int  getZIndex();
+	int setZIndex();
 private:
 	int size[2];
 	int position[2];

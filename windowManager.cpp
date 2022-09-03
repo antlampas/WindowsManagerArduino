@@ -19,7 +19,7 @@ windowManager::windowManager(const int winNum) : windowsNumber{winNum},countRegi
 	this->windows = (window**)malloc(sizeof(window*)*winNum);
 	for(int i=0;i<windowsNumber;i++) this->windows[i] = nullptr;
 }
-bool windowManager::checkWindow(int* size,int* position)
+bool windowManager::checkWindow(int* size,int* position,int zIndex)
 {
 	/*
 	 * Checks if the window passed doesn't overlap with any other previously created window
@@ -28,6 +28,7 @@ bool windowManager::checkWindow(int* size,int* position)
 	{
 		int previousWindowPosition[2] {this->windows[i]->getPosition()[0],this->windows[i]->getPosition()[1]};
 		int previousWindowSize[2]     {this->windows[i]->getSize()[0],this->windows[i]->getSize()[1]};
+		int previousZIndex            {this->windows[i]->getZIndex()}
 		if(!((position[0]>(previousWindowPosition[0]+previousWindowSize[0])) || ((position[0]+size[0])<previousWindowPosition[0]) || (position[1]>(previousWindowPosition[1]+previousWindowSize[1])) || ((position[1]+size[1])<previousWindowPosition[1])))
 		{
 			return true;
